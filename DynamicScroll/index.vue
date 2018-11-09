@@ -112,6 +112,10 @@
       list (nList) {
         manager.updateList(nList)
         this.handleScroll(this.$refs.$scroll.scrollTop, true)
+      },
+      scrollViewHeight (n){
+        manager.updateScrollViewHeight(n)
+        this.handleScroll(this.$refs.$scroll.scrollTop, true)
       }
     },
     mounted () {

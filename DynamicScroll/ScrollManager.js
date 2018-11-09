@@ -54,6 +54,12 @@
  *    lastScrollTop = this.$refs.$scroll.scrollTop
  *    manager.updateScroll(lastScrollTop)
  *    // TODO 2,3,4,(5.1)
+ *
+ *  updateScrollViewHeight支持， 用于更新可视窗口大小
+ *    manager.updateScrollViewHeight(height)
+ *    lastScrollTop = this.$refs.$scroll.scrollTop
+ *    manager.updateScroll(lastScrollTop)
+ *    // TODO 2,3,4,(5.1)
 }
  */
 export default class ScrollManager {
@@ -209,6 +215,14 @@ export default class ScrollManager {
     }, 0)
     this.paddingBottom = this.scrollHeight - this.paddingTop - this.currentCellsTotalHeight
     if (this.paddingBottom < 0) this.paddingBottom = 0
+  }
+
+  // 可视窗口高度更改
+  updateScrollViewHeight(height){
+    this.scrollViewHeight = height
+    if(this.cellHeight){
+      this.renderNumber = Math.ceil(this.scrollViewHeight / this.cellHeight)
+    }
   }
 
   // 获取待渲染的items及相关数据
