@@ -69,7 +69,7 @@
         })
       },
 
-      updateScrollRender (init = false) {
+      updateScrollRender (updateScrollHeight = false) {
         this.scrollData = manager.getRenderInfo()
         this.$forceUpdate()
         // 更新完成后矫正滚动条位置
@@ -80,7 +80,7 @@
               this.$refs.$cell.map(item => item.getBoundingClientRect().height)
             )
             // 动态高度时， 初次初始化时计算滑动的总高度
-            if(init){
+            if(updateScrollHeight){
               manager.updateScrollHeight()
               this.scrollData = manager.getRenderInfo()
             }
@@ -88,31 +88,30 @@
         })
       },
 
-
       onScroll () {
         clearTimeout(t)
         t = setTimeout(()=>{
-          this.handleScroll(true)
-        }, 300)
+          this.handleScroll(this.$refs.$scroll.scrollTop, true)
+        }, 100)
         let current = new Date().getTime()
         if(lastRunTime === undefined || current - lastRunTime > 100){
           lastRunTime = current
-          this.handleScroll()
+          this.handleScroll(this.$refs.$scroll.scrollTop)
         }
-
       },
 
-      handleScroll(updateScrollHeight = false){
-        lastScrollTop = this.$refs.$scroll.scrollTop;
+      // 处理滚动，重新渲染列表
+      // updateScrollHeight 是否需要更新scrollHeight， 整个滚动窗口的大小
+      handleScroll(scrollTop, updateScrollHeight = false){
+        lastScrollTop = scrollTop;
         manager.updateScroll(lastScrollTop);
         this.updateScrollRender(updateScrollHeight)
       },
     },
     watch: {
-      list () {
-        lastScrollTop = 0
-        this.initScrollManager()
-        this.updateScrollRender(true)
+      list (nList) {
+        manager.updateList(nList)
+        this.handleScroll(this.$refs.$scroll.scrollTop, true)
       }
     },
     mounted () {
@@ -125,13 +124,6 @@
 
 <style scoped>
   .t-scroll  {
-    position: relative;
-    background: #eeeeee;
-    overflow: scroll;
-  }
-  .t-scroll-cell {
-    color: #ffffff;
-    font-size: 30px;
-    font-weight: bolder;
+    overflow-y: scroll;
   }
 </style>
