@@ -1,15 +1,14 @@
 <template>
-  <div class="t-scroll"
+  <div class="list"
        ref="$scroll"
        :style="{ height: this.scrollViewHeight + 'px' }"
        @scroll.passive="onScroll">
-    <div class="t-scroll-padding-top" :style="{height: scrollData.paddingTop + 'px'}"></div>
-
-    <div ref="$cell" v-for="item in scrollData.displayCells">
-      <slot name="cell" :cell="item"></slot>
+    <div class="list-phantom" :style="{height: scrollData.scrollHeight+'px'}"></div>
+    <div class="list-content" :style="{transform: `translateY(${scrollData.paddingTop}px)`}">
+      <div ref="$cell" v-for="item in scrollData.displayCells">
+        <slot name="cell" :cell="item"></slot>
+      </div>
     </div>
-
-    <div class="t-scroll-padding-bottom" :style="{height: scrollData.paddingBottom + 'px'}"></div>
   </div>
 </template>
 
@@ -17,10 +16,8 @@
   import ScrollManager from './ScrollManager'
 
   let manager
-  let lastScrollTop
   let heightFixed = true
   let t
-  let lastRunTime
 
   export default {
     name: 'DynamicScroll',
@@ -72,39 +69,33 @@
       updateScrollRender (updateScrollHeight = false) {
         this.scrollData = manager.getRenderInfo()
         this.$forceUpdate()
-        // 更新完成后矫正滚动条位置
-        this.$nextTick(() => {
-          this.$refs.$scroll.scrollTop = lastScrollTop;
-          if (!heightFixed) {
+        if (!heightFixed) {
+          this.$nextTick(() => {
             manager.updateCellHeight(
               this.$refs.$cell.map(item => item.getBoundingClientRect().height)
             )
-            // 动态高度时， 初次初始化时计算滑动的总高度
+            // 动态高度时， 初次初始化和滚动事件结束时计算滑动的总高度
             if(updateScrollHeight){
               manager.updateScrollHeight()
               this.scrollData = manager.getRenderInfo()
             }
-          }
-        })
+          })
+        }
       },
 
       onScroll () {
         clearTimeout(t)
+        // 300ms防抖，当作滚动结束，此时更新整体高度
         t = setTimeout(()=>{
           this.handleScroll(this.$refs.$scroll.scrollTop, true)
-        }, 100)
-        let current = new Date().getTime()
-        if(lastRunTime === undefined || current - lastRunTime > 100){
-          lastRunTime = current
-          this.handleScroll(this.$refs.$scroll.scrollTop)
-        }
+        }, 300)
+        this.handleScroll(this.$refs.$scroll.scrollTop)
       },
 
       // 处理滚动，重新渲染列表
       // updateScrollHeight 是否需要更新scrollHeight， 整个滚动窗口的大小
       handleScroll(scrollTop, updateScrollHeight = false){
-        lastScrollTop = scrollTop;
-        manager.updateScroll(lastScrollTop);
+        manager.updateScroll(scrollTop);
         this.updateScrollRender(updateScrollHeight)
       },
     },
@@ -127,7 +118,21 @@
 </script>
 
 <style scoped>
-  .t-scroll  {
+  .list  {
+    position: relative;
     overflow-y: scroll;
+  }
+  .list-phantom{
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    z-index: -1;
+  }
+  .list-content{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
   }
 </style>

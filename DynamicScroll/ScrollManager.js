@@ -3,7 +3,10 @@
  * 这里对代码中的一些bug和体验不好的地方进行了调整。
  * 1、bug修复，动态高度时，使用鼠标直接拖动滑到进行快速滚动到底部时， 列表显示异常的问题
  * 2、体验优化，动态高度时，连续滑动的情况下，滑块位置会上下移动，
- * 3、功能追加，增加appendList方法，支持数据更新
+ * 3、功能追加
+ *        appendList方法，支持数据追加
+ *        updateList，支持数据更新
+ *        updateScrollViewHeight，可视窗口高度数据更新
  *
  *  调用步骤
  *  1、实例化 ScrollManager 类
@@ -17,6 +20,7 @@
  *  lastScrollTop 为上一次滚动后的滚动条高度，初始值为 0
  *  该值需要在每次触发滚动事件时进行更新
  *    $scrollElement.scrollTop = lastScrollTop
+ *  注意： 如果渲染结果的容器和滚动条的容器不是同一个，可以不用这一步
  *
  *  4、对于高度不定的列表来说，需要在渲染完成后调用更新cell高度的方法
  *  manager.updateCellHeight([cellHeight1, cellHeight2, ...])
