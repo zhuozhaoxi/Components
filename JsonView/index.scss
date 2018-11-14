@@ -1,0 +1,116 @@
+.JsonView-wrapper{
+  font-family: monaco, Consolas, Menlo, Courier, monospace;
+  color: #999;
+  position: relative;
+  margin-top: 1em;
+  border: 1px solid #ddd;
+  border-left: none;
+  line-height: 1.5em;
+  font-size: 16px;
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* 占位条 */
+.JsonView-gutters{
+  position: absolute;
+  left: 0;
+  top: 0;
+  min-height: 100%;
+  border-right: 1px solid #ddd;
+  background-color: #f7f7f7;
+  .JsonView-gutter{
+    white-space: normal;
+    height: 100%;
+    display: inline-block;
+    vertical-align: top;
+    float: left;
+  }
+  .JsonView-fold-gutter{
+    padding: 0 5px;
+    width: 11px;
+  }
+}
+
+/* 行数 */
+.JsonView-gutter-wrapper{
+  /*position: absolute;*/
+  background: 0 0!important;
+  border: none!important;
+  user-select: none;
+  .JsonView-gutter-elt{
+    position: absolute;
+    cursor: default;
+    text-align: center;
+  }
+  .JsonView-line-number{
+    left: 0;
+    padding: 0 3px 0 5px;
+    min-width: 20px;
+    color: #999;
+    white-space: nowrap;
+  }
+  .JsonView-gutter-subtle{
+    cursor: pointer;
+  }
+  .JsonView-fold-gutter-folded{
+    transform: rotateZ(-90deg);
+  }
+}
+pre.JsonView-line{
+  margin: 0 0 0 5px;
+  font-family: inherit;
+  font-size: inherit;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  word-break: normal;
+  .JsonView-folded-marker{
+    cursor: pointer;
+    font-family: arial;
+    color: #00f;
+    text-shadow: #b9f 1px 1px 2px, #b9f -1px -1px 2px, #b9f 1px -1px 2px, #b9f -1px 1px 2px;
+    line-height: .3;
+  }
+}
+
+.icon-caret-bottom{
+  font-style: normal;
+  font-weight: 400;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  vertical-align: baseline;
+  display: inline-block;
+}
+.icon-caret-bottom::after{
+  content: "";
+  border-width: 6px 5px;
+  border-color: transparent;
+  border-style: solid;
+  border-top-color: #999;
+  display: inline-block;
+  box-sizing: content-box;
+  width: 0;
+  height: 0;
+  transform: translateY(5px);
+}
+/* 配色*/
+/deep/ span.json-atom{
+  color: #905;
+}
+/deep/ span.json-number{
+  color: #905;
+}
+/deep/ span.json-string{
+  color: #690;
+}
+/deep/ span.json-bool{
+  color: #1a01cc;
+}
+/deep/ span.json-url{
+  color: #1a01cc;
+}
+/deep/ span.json-property{
+  color: #000000;
+}
