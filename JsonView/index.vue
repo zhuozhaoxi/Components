@@ -38,7 +38,7 @@
         fullList: [],
         displayList: [],
         lineNumberWidth: 20,
-        subtleWidth: 21
+        subtleWidth: 21,
       }
     },
     computed: {
@@ -97,27 +97,7 @@
               section[queue.pop()] = currentLine;
             }
           }
-          let fullStr = value;
-          let match = value.match(/^(\s*)("(.*)":\s)?("(?=.*",?$).*"|[\da-zA-Z]+|\[|\{)(,?)$/);
-          let objKey,objValue,textIndent,endChart,className,hasKey,keyString;
-          if(match){
-            textIndent = match[1];
-            hasKey = match[2];
-            objKey = match[3];
-            objValue = match[4];
-            endChart = match[5];
-            if(hasKey){
-              keyString = `<span class="json-property">"${objKey}"</span>: `;
-            }else{
-              keyString = '';
-            }
-            if(objValue === '[' || objValue === '{'){
-              fullStr = `${textIndent}${keyString}${objValue}`;
-            }else{
-              className = this.getClassNameByValue(objValue);
-              fullStr = `${textIndent}${keyString}<span class="${className}">${objValue}</span>${endChart}`;
-            }
-          }
+          let fullStr = this.toFullText(value)
           return {
             show: 1,
             isFolder: false,
@@ -135,6 +115,38 @@
           }
         }
         return list;
+      },
+      toFullText(value){
+        let fullStr = value;
+        let match = value.match(/^(\s*)("(.*)":\s)?("(?=.*",?$).*"|[\da-zA-Z]+|\[|\{)(,?)$/);
+        let objKey,objValue,textIndent,endChart,className,hasKey,keyString;
+        if(match){
+          textIndent = match[1];
+          hasKey = match[2];
+          objKey = match[3];
+          objValue = match[4];
+          endChart = match[5];
+          if(hasKey){
+            objKey = this.stringToEntity(objKey);
+            keyString = `<span class="json-property">"${objKey}"</span>: `;
+          }else{
+            keyString = '';
+          }
+          if(objValue === '[' || objValue === '{'){
+            fullStr = `${textIndent}${keyString}${objValue}`;
+          }else{
+            objValue = this.stringToEntity(objValue);
+            className = this.getClassNameByValue(objValue);
+            fullStr = `${textIndent}${keyString}<span class="${className}">${objValue}</span>${endChart}`;
+          }
+        }
+        return fullStr;
+      },
+      stringToEntity(str){
+        let div=document.createElement('div');
+        div.innerText= str;
+        div.textContent= str;
+        return div.innerHTML;
       },
       getClassNameByValue(value){
         let map = [
