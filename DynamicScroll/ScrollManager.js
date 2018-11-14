@@ -162,7 +162,7 @@ export default class ScrollManager {
       let passedCellsHeight = 0
       for (let i = 0; i < this.heightCache.length; i++) {
 
-        if (scrollTop < passedCellsHeight){
+        if (scrollTop <= passedCellsHeight){
           break;
         }
         this.passedCells = i
