@@ -90,7 +90,7 @@
         let queue = [],currentLine,section = {};
         let list = arr.map((value, index) => {
           currentLine = index+1;
-          if(this.isWrapperLine(value)){
+          if(this.isWrapperLine(value)){  // 记录{},[]的区间范围，跳过空区间
             if(this.isWrapperLineBegin(value)){
               queue.push(currentLine)
             }else{
@@ -165,12 +165,19 @@
         let endIndex = item.endLine - 1;
         return $.trim(this.fullList[endIndex].str);
       },
+      // 以{ } [ ] 结尾，逗号可选， 反向否定预查且前面不能是{ [
       isWrapperLine(str){
-        let reg = new RegExp(/(?<!{|\[)[{}\[\]],?$/);
+        // js 不能使用(?<!) 和 (?<=)
+        // let reg = /(?<!\{|\[)[{}\[\]],?$/;
+        let reg = new RegExp(/[{\[][}\]],?$/);
+        if(reg.test(str)){
+          return false;
+        }
+        reg = new RegExp(/[{}\[\]],?$/);
         return reg.test(str);
       },
       isWrapperLineBegin(str){
-        let reg = new RegExp(/[{\[]$/);
+        let reg = /[{\[]$/;
         return reg.test(str);
       },
       toggleFolder(folderItem){
