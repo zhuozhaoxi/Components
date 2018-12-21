@@ -1,11 +1,11 @@
 <template>
-  <div class="list"
+  <div class="zx-virtual-table-list"
        ref="$scroll"
        :style="{ height: this.scrollViewHeight + 'px' }"
        @scroll.passive="onScroll">
     <slot name="before" :data="scrollData"></slot>
-    <div class="list-phantom" :style="{height: scrollData.scrollHeight+'px'}"></div>
-    <div class="list-content" :style="{transform: `translateY(${scrollData.paddingTop}px)`}">
+    <div class="zx-virtual-table-list-phantom" :style="{height: scrollData.scrollHeight+'px'}"></div>
+    <div class="zx-virtual-table-list-content" :style="{transform: `translateY(${scrollData.paddingTop}px)`}">
       <div ref="$cell" v-for="item in scrollData.displayCells">
         <slot name="cell" :cell="item"></slot>
       </div>
@@ -119,18 +119,18 @@
 </script>
 
 <style scoped>
-  .list  {
+  .zx-virtual-table-list  {
     position: relative;
     overflow-y: scroll;
   }
-  .list-phantom{
+  .zx-virtual-table-list-phantom{
     position: absolute;
     left: 0;
     top: 0;
     right: 0;
     z-index: -1;
   }
-  .list-content{
+  .zx-virtual-table-list-content{
     position: absolute;
     left: 0;
     right: 0;
