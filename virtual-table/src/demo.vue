@@ -1,16 +1,16 @@
 <template>
-  <dynamic-scroll :list="cells" :scrollViewHeight="736">
+  <virtual-table :list="cells" :scrollViewHeight="736">
     <div slot="cell" slot-scope="props"
          :style="props.cell.style">{{props.cell.text}}</div>
-  </dynamic-scroll>
+  </virtual-table>
 </template>
 
 <script>
-  import DynamicScroll from './index'
+  import VirtualTable from './packages'
 
   export default {
     name: 'Scroll',
-    components: { DynamicScroll },
+    components: { VirtualTable },
     computed: {
       cells () {
         return new Array(1000).fill(1).map((item, index) => {
