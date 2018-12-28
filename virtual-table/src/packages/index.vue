@@ -18,7 +18,7 @@
   import ScrollManager from './ScrollManager'
 
   export default {
-    name: 'DynamicScroll',
+    name: 'VirtualTable',
     props: {
       scrollViewHeight: {
         type: Number,

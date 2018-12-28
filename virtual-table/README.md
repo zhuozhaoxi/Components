@@ -1,18 +1,46 @@
 # virtual-table
 
-> vue virtual srcoller table for rndering long lists
+> vue virtual table for rendering long lists
 
-## Build Setup
+## Install
 
 ``` bash
 # install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
+npm install zx-vue-virtual-table --save
 ```
 
-For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## How to use
+```
+# import package
+import VirtualTable from 'zx-vue-virtual-table'
+
+# declare component
+Vue.component('virtual-table', VirtualTable)
+
+# useage
+<virtual-table :list="cells" :scrollViewHeight="736">
+  <div slot="cell" slot-scope="props">
+    {{props.cell.text}}
+  </div>
+</virtual-table>
+```
+
+## Attributes
+
+Attribute | Type | Description | Default    
+---|---|---|---
+scroll-view-height | int | Table height, required | ---
+list | array | Table data, required | ---
+cell-cache-number | int | Pre-rendered quantity | 3
+cell-height | int | cell height, 0 means dynamic height, other means fixed height | 0
+
+## Slots
+
+Name | Description | Parameters
+---|---|---
+before | will insert before virtual table | data:array (current rendered data) 
+after | will insert after virtual table | data:array (current rendered data)
+cell | render template for each item | cell: --- (item of table data) 
+
+
+

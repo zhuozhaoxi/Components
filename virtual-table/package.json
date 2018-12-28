@@ -1,7 +1,7 @@
 {
   "name": "zx-vue-virtual-table",
-  "description": "vue virtual srcoller table for rndering long lists",
-  "version": "1.0.1",
+  "description": "vue virtual table for rendering long lists",
+  "version": "1.0.2",
   "author": "zhaoxi <zhuozhaoxi@jd.com>",
   "repository": {
     "type": "git",
